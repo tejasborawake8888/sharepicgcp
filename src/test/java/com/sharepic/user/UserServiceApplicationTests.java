@@ -1,10 +1,10 @@
-package com.sharepic.blog;
+package com.sharepic.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BlogApplicationTests {
+class UserServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
