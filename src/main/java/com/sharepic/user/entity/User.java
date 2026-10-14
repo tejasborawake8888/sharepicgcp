@@ -1,20 +1,21 @@
 package com.sharepic.user.entity;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sharepic.user.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
@@ -27,7 +28,6 @@ public class User {
     private String userName;
 
     @Column(nullable = false,unique = true,length = 200)
-    @Valid
     private String email;
 
     @Column(name = "password_hash",nullable = false,length = 255)
@@ -35,7 +35,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false,length = 20)
-    private Role roles;
+    private Role role;
 
     @Column(length = 500)
     private String bio;
@@ -49,6 +49,13 @@ public class User {
     @Column(name = "updated_at",nullable = false)
     private LocalDateTime updatedAt;
 
+    public User(@NotBlank @Size(min = 3, max = 50) String userName, @Email @Size(max = 255) @NotBlank String email, @Nullable String encode, Role role) {
+        this.userName = userName;
+        this.email = email;
+        this.passwordHash = encode;
+        this.role = role;
+    }
+
     @PrePersist
     protected void create(){
         LocalDateTime now = LocalDateTime.now();
@@ -61,5 +68,15 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(userName, user.userName) && Objects.equals(email, user.email) && role == user.role && Objects.equals(bio, user.bio) && Objects.equals(profilePicUrl, user.profilePicUrl);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userName, email, role, bio, profilePicUrl);
+    }
 }
