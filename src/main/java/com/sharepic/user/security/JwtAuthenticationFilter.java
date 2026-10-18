@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
-            filterChain.doFilter(request, response);
+
         }catch (JwtException | IllegalArgumentException | UserNotFoundException ex) {
             SecurityContextHolder.clearContext();
             response.sendError(
@@ -65,5 +65,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     "Invalid or expired token"
             );
         }
+        filterChain.doFilter(request, response);
     }
 }

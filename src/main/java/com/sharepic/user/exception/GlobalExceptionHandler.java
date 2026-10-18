@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleUserNotFoundException(InvalidCredentialsException ex){
-        return build(HttpStatus.NOT_FOUND,ErrorCode.INVALID_CREDENTIALS.getErrorCode(), ErrorCode.INVALID_CREDENTIALS.getMsg());
+        return build(HttpStatus.UNAUTHORIZED,ErrorCode.INVALID_CREDENTIALS.getErrorCode(), ErrorCode.INVALID_CREDENTIALS.getMsg());
     }
 
     @ExceptionHandler(UserNotFoundException.class)
