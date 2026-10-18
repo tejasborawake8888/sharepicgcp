@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,10 +23,10 @@ import java.util.UUID;
 public class PostController {
     private final PostService postService;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Posts> createPost(
             @AuthenticationPrincipal UUID userId,
-            @Valid @RequestBody PostRequest request
+            @Valid @ModelAttribute PostRequest request
             ){
         log.info("Post creation started");
         return ResponseEntity.ok().body(postService.createPost(userId, request.getCaption(), request.getImage()));
@@ -36,18 +38,19 @@ public class PostController {
         return ResponseEntity.ok().body(postService.getPost(postId));
     }
 
-    @PutMapping("/{postId}")
+    @PutMapping(value = "/{postId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Posts> updatePost(
             @PathVariable UUID postId,
             @AuthenticationPrincipal UUID userId,
-            @Valid @RequestBody PostRequest request
+            @Valid @ModelAttribute PostRequest request
     ){
         log.info("Updating the post started");
         return ResponseEntity.ok().body(postService.updatePost(postId,userId, request.getCaption(), request.getImage()));
     }
 
     @DeleteMapping("/{postId}")
-    public void delePost(
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePost(
             @PathVariable UUID postId,
             @AuthenticationPrincipal UUID userId
     ){

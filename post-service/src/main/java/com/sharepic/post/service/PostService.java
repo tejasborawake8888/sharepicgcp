@@ -5,7 +5,6 @@ import com.sharepic.post.enums.ErrorCode;
 import com.sharepic.post.exception.IllegalUserForPostUpdateException;
 import com.sharepic.post.exception.PostNotFoundException;
 import com.sharepic.post.repository.PostRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,14 +21,18 @@ public class PostService {
 
     public Posts createPost(UUID userId, String caption, MultipartFile image){
         Instant now = Instant.now();
-        String imageUrl = postImageStorageService.uploadPostImage(image);
         Posts post = Posts.builder()
                 .userId(userId)
                 .caption(caption)
-                .imageUrl(imageUrl)
                 .createdAt(now)
                 .updatedAt(now)
                 .build();
+
+        if(image != null && !image.isEmpty()){
+            String imageUrl = postImageStorageService.uploadPostImage(image);
+            post.setImageUrl(imageUrl);
+        }
+
         return postRepository.save(post);
     }
 
@@ -44,8 +47,12 @@ public class PostService {
             throw new IllegalUserForPostUpdateException(ErrorCode.ILLEGAL_USER_FOR_POST_UPDATE.getMsg());
         }
         post.setCaption(caption);
-        String imageUrl = postImageStorageService.uploadPostImage(image);
-        post.setImageUrl(imageUrl);
+
+        if(image != null && !image.isEmpty()){
+            String imageUrl = postImageStorageService.uploadPostImage(image);
+            post.setImageUrl(imageUrl);
+        }
+
         post.setUpdatedAt(Instant.now());
         return postRepository.save(post);
     }

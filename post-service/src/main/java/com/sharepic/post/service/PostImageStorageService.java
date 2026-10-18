@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class PostImageStorageService {
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
 
@@ -28,11 +27,11 @@ public class PostImageStorageService {
 
     public String uploadPostImage(MultipartFile imageFile){
         if(imageFile == null || imageFile.isEmpty()){
-            throw new IllegalArgumentException("Profile picture cannot be empty");
+            throw new IllegalArgumentException("Post picture cannot be empty");
         }
         if(imageFile.getSize() > MAX_FILE_SIZE){
             throw new IllegalArgumentException(
-                    "Profile picture must not exceed 5 MB");
+                    "Post picture must not exceed 5 MB");
         }
         String contentType = imageFile.getContentType();
         String extension = switch (contentType == null ? "": contentType.toLowerCase()){
