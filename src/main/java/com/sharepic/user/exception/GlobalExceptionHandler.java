@@ -40,4 +40,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException ex){
         return build(HttpStatus.CONFLICT,ErrorCode.USER_ALREADY_EXISTS.getErrorCode(), ErrorCode.USER_ALREADY_EXISTS.getMsg());
     }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(InvalidCredentialsException ex){
+        return build(HttpStatus.NOT_FOUND,ErrorCode.INVALID_CREDENTIALS.getErrorCode(), ErrorCode.INVALID_CREDENTIALS.getMsg());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex){
+        return build(HttpStatus.NOT_FOUND,ErrorCode.USER_NOT_FOUND.getErrorCode(), ErrorCode.USER_NOT_FOUND.getMsg());
+    }
+
 }
