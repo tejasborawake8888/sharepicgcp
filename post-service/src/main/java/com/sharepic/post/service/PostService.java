@@ -18,13 +18,13 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public Post createPost(UUID userId, String caption, String imageURL){
+    public Post createPost(UUID userId, String caption, String imageUrl){
         Instant now = Instant.now();
 
         Post post = Post.builder()
                 .userId(userId)
                 .caption(caption)
-                .impageUrl(imageURL)
+                .imageUrl(imageUrl)
                 .createdAt(now)
                 .updatedAt(now)
                 .build();
@@ -36,13 +36,13 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException(ErrorCode.POST_NOT_FOUND.getMsg()));
     }
 
-    public Post updatePost(UUID postId, UUID userId,String caption, String imageURL){
+    public Post updatePost(UUID postId, UUID userId,String caption, String imageUrl){
         Post post = getPost(postId);
         if(!post.getUserId().equals(userId)){
             throw new IllegalUserForPostUpdateException(ErrorCode.ILLEGAL_USER_FOR_POST_UPDATE.getMsg());
         }
         post.setCaption(caption);
-        post.setImpageUrl(imageURL);
+        post.setImageUrl(imageUrl);
         post.setUpdatedAt(Instant.now());
         return postRepository.save(post);
     }

@@ -28,6 +28,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalUserForPostUpdateException.class)
     public ResponseEntity<ErrorResponse> handleIllegalUserForPostUpdateException(IllegalUserForPostUpdateException ex){
-        return build(HttpStatus.FORBIDDEN,ErrorCode.ILLEGAL_USER_FOR_POST.getErrorCode(), ErrorCode.ILLEGAL_USER_FOR_POST.getMsg());
+        return build(HttpStatus.FORBIDDEN,ErrorCode.ILLEGAL_USER_FOR_POST_UPDATE.getErrorCode(), ErrorCode.ILLEGAL_USER_FOR_POST_UPDATE.getMsg());
     }
 }

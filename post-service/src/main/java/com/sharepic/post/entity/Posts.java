@@ -7,13 +7,13 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "post")
+@Table(name = "posts")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+public class Posts {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -25,12 +25,12 @@ public class Post {
     private String caption;
 
     @Column(name = "image_url")
-    private String impageUrl;
+    private String imageUrl;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at",nullable = false)
     private Instant createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at",nullable = false)
     private Instant updatedAt;
 
 }
