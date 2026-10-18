@@ -1,6 +1,6 @@
 package com.sharepic.feed.config;
 
-import com.sharepic.post.security.JwtAutheticationFilter;
+import com.sharepic.feed.security.JwtAutheticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +25,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**")
                         .permitAll()
+                        .requestMatchers("/api/v1/feed",
+                                "/api/v1/posts/**").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(
                         jwtAutheticationFilter,

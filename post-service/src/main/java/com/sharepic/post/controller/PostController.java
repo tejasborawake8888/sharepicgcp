@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -56,5 +57,11 @@ public class PostController {
     ){
         log.info("Post deletion started");
         postService.deletePost(postId,userId);
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<List<Posts>> getAllPosts(){
+        log.info("retrieveing all posts");
+        return ResponseEntity.ok().body(postService.getAllPosts());
     }
 }

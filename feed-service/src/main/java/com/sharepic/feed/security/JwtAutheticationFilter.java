@@ -1,6 +1,6 @@
 package com.sharepic.feed.security;
 
-import com.sharepic.post.service.JwtService;
+import com.sharepic.feed.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;

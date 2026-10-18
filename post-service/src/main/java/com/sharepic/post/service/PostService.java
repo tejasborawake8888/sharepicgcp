@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -64,5 +65,9 @@ public class PostService {
                      ErrorCode.ILLEGAL_USER_FOR_POST_UPDATE.getMsg());
         }
         postRepository.delete(post);
+    }
+
+    public List<Posts> getAllPosts(){
+        return postRepository.findAllByOrderByCreatedAtDesc();
     }
 }
