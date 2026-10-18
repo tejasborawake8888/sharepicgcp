@@ -8,6 +8,7 @@ import com.sharepic.post.repository.PostRepository;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -17,10 +18,11 @@ import java.util.UUID;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final PostImageStorageService postImageStorageService;
 
-    public Posts createPost(UUID userId, String caption, String imageUrl){
+    public Posts createPost(UUID userId, String caption, MultipartFile image){
         Instant now = Instant.now();
-
+        String imageUrl = postImageStorageService.uploadPostImage(image);
         Posts post = Posts.builder()
                 .userId(userId)
                 .caption(caption)
@@ -36,12 +38,13 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException(ErrorCode.POST_NOT_FOUND.getMsg()));
     }
 
-    public Posts updatePost(UUID postId, UUID userId,String caption, String imageUrl){
+    public Posts updatePost(UUID postId, UUID userId,String caption, MultipartFile image){
         Posts post = getPost(postId);
         if(!post.getUserId().equals(userId)){
             throw new IllegalUserForPostUpdateException(ErrorCode.ILLEGAL_USER_FOR_POST_UPDATE.getMsg());
         }
         post.setCaption(caption);
+        String imageUrl = postImageStorageService.uploadPostImage(image);
         post.setImageUrl(imageUrl);
         post.setUpdatedAt(Instant.now());
         return postRepository.save(post);
