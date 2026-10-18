@@ -1,6 +1,6 @@
 package com.sharepic.post.service;
 
-import com.sharepic.post.entity.Post;
+import com.sharepic.post.entity.Posts;
 import com.sharepic.post.enums.ErrorCode;
 import com.sharepic.post.exception.IllegalUserForPostUpdateException;
 import com.sharepic.post.exception.PostNotFoundException;
@@ -18,10 +18,10 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public Post createPost(UUID userId, String caption, String imageUrl){
+    public Posts createPost(UUID userId, String caption, String imageUrl){
         Instant now = Instant.now();
 
-        Post post = Post.builder()
+        Posts post = Posts.builder()
                 .userId(userId)
                 .caption(caption)
                 .imageUrl(imageUrl)
@@ -31,13 +31,13 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Post getPost(UUID postId){
+    public Posts getPost(UUID postId){
         return postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(ErrorCode.POST_NOT_FOUND.getMsg()));
     }
 
-    public Post updatePost(UUID postId, UUID userId,String caption, String imageUrl){
-        Post post = getPost(postId);
+    public Posts updatePost(UUID postId, UUID userId,String caption, String imageUrl){
+        Posts post = getPost(postId);
         if(!post.getUserId().equals(userId)){
             throw new IllegalUserForPostUpdateException(ErrorCode.ILLEGAL_USER_FOR_POST_UPDATE.getMsg());
         }
@@ -48,7 +48,7 @@ public class PostService {
     }
 
     public void deletePost(UUID postId, UUID userId){
-        Post post = getPost(postId);
+        Posts post = getPost(postId);
         if (!post.getUserId().equals(userId)) {
             throw new IllegalUserForPostUpdateException(
                      ErrorCode.ILLEGAL_USER_FOR_POST_UPDATE.getMsg());
