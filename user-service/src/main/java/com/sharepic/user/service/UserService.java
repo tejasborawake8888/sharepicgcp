@@ -89,4 +89,28 @@ public class UserService {
                 updatedUser.getProfilePicUrl()
         );
     }
+
+    public SignupResponse registerAdmin(SignupRequest request){
+        boolean userExists = userRepository.existsByUserName(request.getUserName());
+        boolean userEmailExists = userRepository.existsByEmail(request.getEmail());
+        if(userExists){
+            throw new UserAlreadyExistsException(ErrorCode.USER_ALREADY_EXISTS.getMsg());
+        }
+        if(userEmailExists){
+            throw new UserAlreadyExistsException(ErrorCode.USER_ALREADY_EXISTS.getMsg());
+        }
+        User newUser = new User(
+                request.getUserName(),
+                request.getEmail(),
+                passwordEncoder.encode(request.getPassword()),
+                Role.ADMIN);
+        newUser = userRepository.save(newUser);
+        return new SignupResponse(
+                newUser.getId(),
+                newUser.getUserName(),
+                newUser.getEmail(),
+                newUser.getRole(),
+                newUser.getCreatedAt());
+
+    }
 }

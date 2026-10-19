@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,5 +55,13 @@ public class UserController {
         log.info("profile update started");
         String userId = authentication.getPrincipal().toString();
         return ResponseEntity.ok().body(userService.updateUser(userId, bio, profilepic));
+    }
+
+    @PostMapping("/admin/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<SignupResponse> createAdmin(
+            @Valid @RequestBody SignupRequest request) {
+        log.info("creating admin user");
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerAdmin(request));
     }
 }
