@@ -4,6 +4,7 @@ import com.sharepic.user.enums.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -28,6 +29,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleMethodArgumentValidException(MethodArgumentNotValidException ex){
         log.warn("validation failed with below exception: ", ex);
         return build(HttpStatus.BAD_REQUEST, ErrorCode.VALIDATION_FAILED.getErrorCode(),ErrorCode.VALIDATION_FAILED.getMsg());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(
+            AccessDeniedException ex) {
+
+        log.warn("Access denied: {}", ex.getMessage());
+
+        return build(
+                HttpStatus.FORBIDDEN,
+                ErrorCode.ACCESS_DENIED.getErrorCode(),
+                ErrorCode.ACCESS_DENIED.getMsg()
+        );
     }
 
     @ExceptionHandler(Exception.class)
