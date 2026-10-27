@@ -1,0 +1,153 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #202124;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  background: #f6f7fb;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 36px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #e7e8ef;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px rgba(31, 41, 55, 0.07);
+}
+
+.brand {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.brand-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #6548e8;
+  color: white;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 27px;
+  letter-spacing: -0.8px;
+}
+
+.brand p,
+.form-heading p {
+  color: #707584;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.brand p {
+  margin: 8px 0 0;
+}
+
+.form-heading {
+  margin-bottom: 24px;
+}
+
+.form-heading h2 {
+  margin: 0 0 7px;
+  font-size: 21px;
+}
+
+.form-heading p {
+  margin: 0;
+}
+
+.form-field {
+  margin-bottom: 18px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 12px 13px;
+  box-sizing: border-box;
+  border: 1px solid #d9dce5;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-field input:focus {
+  border-color: #6548e8;
+  box-shadow: 0 0 0 3px rgba(101, 72, 232, 0.12);
+}
+
+button {
+  width: 100%;
+  margin-top: 4px;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  background: #6548e8;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #5336d4;
+}
+
+.register-link {
+  margin: 24px 0 0;
+  text-align: center;
+  font-size: 14px;
+  color: #707584;
+}
+
+.register-link a {
+  color: #6548e8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+.footer-text {
+  margin: 22px 0 0;
+  color: #858998;
+  font-size: 12px;
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 16px;
+  }
+
+  .login-card {
+    padding: 28px 22px;
+  }
+}

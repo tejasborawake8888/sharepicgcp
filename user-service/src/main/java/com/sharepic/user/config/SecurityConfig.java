@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.Customizer;
 
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -21,7 +22,9 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        http.authorizeHttpRequests(
+        http.
+                cors(Customizer.withDefaults())
+                .authorizeHttpRequests(
                 auth -> auth
                         .requestMatchers(
                                 "/api/v1/users",

@@ -1,0 +1,112 @@
+
+<div class="page">
+  <div class="login-card">
+    <div class="brand">
+      <div class="brand-icon">S</div>
+      <h1>Sharepic</h1>
+      <p>Share your moments with the world.</p>
+    </div>
+
+    <div class="form-heading">
+      <h2>Create your account</h2>
+      <p>Join Sharepic and start sharing your moments.</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-field">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          name="username"
+          type="text"
+          placeholder="Choose a username"
+          autocomplete="username"
+          formControlName="username"
+        />
+        @if(registerForm.controls.username.invalid && registerForm.controls.username.touched){
+          @if(registerForm.controls.username.errors?.['required']){
+            <p>Username can't be empty</p>
+          }
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input
+          
+          id="email"
+          name="email"
+          type="email"
+          placeholder="Enter your email"
+          autocomplete="email"
+          formControlName="email"
+        />
+        @if (registerForm.controls.email.invalid && registerForm.controls.email.touched){
+          @if(registerForm.controls.email.errors?.['required']){
+              <p>Email field can't be empty</p>
+          }@else if(registerForm.controls.email.errors?.['email']){
+              <p>Email is invalid</p>
+          }
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Create a password"
+          autocomplete="new-password"
+          formControlName="password"
+        />
+        @if (registerForm.controls.password.invalid && registerForm.controls.password.touched){
+          @if(registerForm.controls.password.errors?.['required']){
+            <p>password can't be empty</p>
+          }
+          @if(registerForm.controls.password.errors?.['minlength']){
+            <p>minimum length of password should be 8</p>
+          }
+          @if(registerForm.controls.password.errors?.['pattern']){
+            <p>Please have 1 Caps, 1 small, 1 special char in the password</p>
+          }
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="confirmPassword">Confirm password</label>
+        <input
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          placeholder="Enter your password again"
+          autocomplete="new-password"
+          formControlName="confirmPassword"
+        />
+        @if (registerForm.controls.confirmPassword.invalid && registerForm.controls.confirmPassword.touched){
+          @if(registerForm.controls.confirmPassword.errors?.['required']){
+            <p>password can't be empty</p>
+          }  
+        }
+      </div>
+        @if (
+              registerForm.hasError('passwordMismatch')  
+              && registerForm.controls.confirmPassword.touched){
+              <p>Passwords don't match</p>
+        }
+      <button type="submit">Create account</button>
+    </form>
+    @if(successMessage){
+      <p>{{successMessage}}</p>
+    }
+    @if(errorMessage){
+      <p>{{errorMessage}}</p>
+    }
+    <p class="register-link">
+      Already have an account?
+      <a routerLink="/login">Sign in</a>
+    </p>
+  </div>
+
+  <p class="footer-text">© 2026 Sharepic</p>
+</div>
