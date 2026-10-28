@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-
+import { API_CONFIG } from './api-config';
 
 export interface PostResponse{
     id: string,
@@ -25,7 +25,7 @@ export interface PostResponse {
   providedIn: 'root'
 })
 export class Post {
-  private readonly apiUrl = 'http://localhost:8080/api/v1/posts';
+  private readonly apiUrl = `${API_CONFIG.post}/posts`;
 
   constructor(private http: HttpClient) {} 
 

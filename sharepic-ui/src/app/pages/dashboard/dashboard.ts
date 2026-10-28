@@ -7,6 +7,8 @@ import { PostImageService } from '../../services/post-image';
 import { CreatePost } from '../../components/create-post/create-post';
 import { PostLike } from '../../services/post-like';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { JwtTokenStorage } from '../../services/jwt-token-storage';
 
 @Component({
   standalone: true,
@@ -19,7 +21,9 @@ export class Dashboard implements OnInit,OnDestroy{
   constructor(private feed: Feed,
     private cdr:ChangeDetectorRef,
     private postImage: PostImageService,
-    private postLike: PostLike
+    private postLike: PostLike,
+    private jwtTokenStorage: JwtTokenStorage,
+    private router: Router
   ){}
   posts: PostResponse[] = []
   loading=true;
@@ -135,5 +139,9 @@ export class Dashboard implements OnInit,OnDestroy{
         this.cdr.detectChanges();
       }
     });
+  }
+  logout(): void {
+    this.jwtTokenStorage.clearToken();
+    this.router.navigate(['/login']);
   }
 }

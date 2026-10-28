@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from './api-config';
+
 export enum Role{
     USER = 'USER',
     ADMIN = 'ADMIN'
@@ -35,9 +37,9 @@ export interface LoginResponse{
 export class Auth {
     constructor(private client:HttpClient ){}
     registerUser(signupRequest: SignupRequest):Observable<SignupResponse>{
-        return this.client.post<SignupResponse>("http://localhost:8081/api/v1/users",signupRequest);
+        return this.client.post<SignupResponse>(`${API_CONFIG.user}/users`,signupRequest);
     }
     login(loginRequest: LoginRequest):Observable<LoginResponse>{
-        return this.client.post<LoginResponse>("http://localhost:8081/api/v1/auth/login",loginRequest);
+        return this.client.post<LoginResponse>(`${API_CONFIG.user}/auth/login`,loginRequest);
     }
 }

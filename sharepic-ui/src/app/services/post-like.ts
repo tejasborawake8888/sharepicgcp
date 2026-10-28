@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from './api-config';
 
 export interface PostLikeResponse {
   id: {
@@ -14,7 +15,7 @@ export interface PostLikeResponse {
   providedIn: 'root'
 })
 export class PostLike {
-  private readonly apiUrl = 'http://localhost:8082/api/v1/posts';
+  private readonly apiUrl = `${API_CONFIG.feed}/posts`;
 
   constructor(private http: HttpClient) {}
 
