@@ -224,19 +224,54 @@ Record actual test results separately; this README does not claim that every sce
 
 ## Cloud Deployment
 
-Google Kubernetes Engine (GKE) is the intended deployment target. Google Cloud SQL for PostgreSQL and Google Cloud Storage are used/planned as managed cloud dependencies.
+### Verified GCP environment
 
-Before deploying, confirm and document the actual setup for:
+| Component | Configuration |
+|---|---|
+| GCP project | `project-7724e29a-0202-4802-903` |
+| Region | `us-east1` |
+| GKE cluster | `sharepic-cluster` (Autopilot) |
+| Artifact Registry | `us-east1-docker.pkg.dev/project-7724e29a-0202-4802-903/sharepic-repo` |
+| Cloud SQL | `sharepic-1` (PostgreSQL 16.15) |
+| Kubernetes service account | `sharepic-ksa` |
+| Runtime Kubernetes Secret | `sharepic-runtime-secrets` |
+| GCS bucket | `sharepic-profile-pictures-1` |
+| Current release | `20261028162646` |
+| Application URL | `http://136.82.121.18` |
 
-1. Container image build and registry.
-2. GKE namespace, workloads, services, and service exposure.
-3. Cloud SQL connectivity and database configuration.
-4. GCS IAM permissions and image URL access.
-5. Secret delivery to pods. Prefer the organization's approved workload identity/secret-management approach rather than embedding service-account key files in images.
-6. Readiness/liveness probes, resource requests/limits, logs, and health checks.
-7. Environment-specific service URLs, CORS settings, and TLS/HTTPS.
+The public Ingress was created manually in the GCP Console and routes HTTP traffic on port 80 to the `sharepic-ui` Service. HTTPS/TLS is not configured or verified.
 
-Deployment manifests and cloud-specific commands should be added here once the final configuration is verified.
+### Runtime architecture
+
+- Angular is served by Nginx in the `sharepic-ui` workload.
+- Nginx routes user and authentication APIs to `user-service:8081`, feed and like APIs to `feed-service:8082`, and post APIs to `post-service:8080`.
+- Backend workloads connect to Cloud SQL PostgreSQL through Cloud SQL Auth Proxy sidecars.
+- Profile and post images are stored in Google Cloud Storage.
+- Each of the four deployments currently has one ready replica. Application-level high availability and autoscaling have not been verified.
+
+### Deployment scripts
+
+`deploy.sh` builds four container images using Cloud Build and publishes them to Artifact Registry with a timestamp tag. By default, it builds images only. It uses the current local working tree, which may differ from GitHub.
+
+Build images only:
+
+    ./deploy.sh
+
+Build images and explicitly request a live deployment:
+
+    ./deploy.sh --deploy
+
+Deploy an existing release:
+
+    ./deploy-release.sh 20261028162646
+
+The release script verifies that the four images exist, requests confirmation, updates each deployment, and waits for rollouts. A failure partway through can leave some services updated and others unchanged; this is not an atomic release.
+
+### Validation and production readiness
+
+The manifests passed client-side dry-run validation. This validates manifest parsing, not a full deployment. Release `20261028162646` exists in Artifact Registry and is running in GKE, with one ready replica per deployment. The public frontend returned HTTP 200; this is not a full end-to-end regression test.
+
+Before production use, review HTTPS/TLS, backend health probes, replica counts and autoscaling, Cloud SQL HA/backups/restore, GCS IAM and recovery, secret access, JWT security, CORS, monitoring, and automated integration testing. The current password-login/JWT implementation should not be described as a complete OAuth2 flow unless separately verified.
 
 ## Documentation
 

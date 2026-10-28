@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sharepic-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sharepic-ui
+  template:
+    metadata:
+      labels:
+        app: sharepic-ui
+    spec:
+      containers:
+        - name: sharepic-ui
+          image: us-east1-docker.pkg.dev/project-7724e29a-0202-4802-903/sharepic-repo/sharepic-ui:20261028162646
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
