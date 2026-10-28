@@ -4,6 +4,7 @@ import { Injectable } from "@angular/core";
 export class JwtTokenStorage{
     
     saveToken(token: string): void{
+        console.log('Saving the token now')
         sessionStorage.setItem("access_token",token)
     }
 

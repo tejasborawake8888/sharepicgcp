@@ -1,0 +1,45 @@
+<header class="dashboard-header">
+    <div class="brand">
+      <div class="brand-icon">S</div>
+      <div class="brand-text">
+        <p>Sharepic</p>
+        <p>Share your moments with the world.</p>
+      </div>
+    </div>
+    <nav class="header-actions">
+        <button class="create-post-btn">Create Post</button>
+        <button class="profile-btn">Profile</button>
+        <button class="logout-btn">Logout</button>
+    </nav>
+</header>
+
+<main class="feed-container">
+    <h1>Your Feed</h1>
+    @if(loading){
+        <p class = "feed-empty">Loading Feed ..........</p>
+    }
+    @else if(posts.length ===0){
+        <p class="feed-empty">No Posts to display yet.</p>    
+    }
+    @else{
+        <p>posts recevied: {{posts.length}}</p>
+        <section class = "post-list">
+            @for(post of posts; track post.id){
+                <article class="post-card">
+                    <img 
+                        class = "post-image"
+                        [src]="post.imageUrl"
+                        [alt]="post.caption"
+                    />
+                    <div class="post-content">
+                        <p class="post-caption">{{post.caption}}</p>
+                        <p class="post-date">
+                            {{post.createdAt | date:'medium'}}
+                        </p>
+                    </div>
+                </article>
+            }
+        </section>
+    }
+    
+</main>

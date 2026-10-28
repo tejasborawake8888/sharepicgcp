@@ -1,9 +1,10 @@
 
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router,RouterLink } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Auth, LoginRequest } from '../../services/auth';
-import { JwtTokenStorage } from '../../services/JwtTokenStorage';
+import { JwtTokenStorage } from '../../services/jwt-token-storage';
+
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ import { JwtTokenStorage } from '../../services/JwtTokenStorage';
 export class Login {
   constructor(private auth: Auth,
     private cdr: ChangeDetectorRef,
-    private jwtTokenStorage: JwtTokenStorage ){}
+    private jwtTokenStorage: JwtTokenStorage,
+   private router: Router ){}
   successMessage = ''
   errorMessage = ''
   loginForm = new FormGroup({
@@ -36,13 +38,13 @@ export class Login {
       password: this.loginForm.controls.password.value
     }
     this.auth.login(loginRequest).subscribe({
-      next: (response) =>{
-        console.log('Login Successful executed')
-        this.successMessage = `User login successfull for ${response.userName}`
-        this.errorMessage = ''
-        this.jwtTokenStorage.saveToken(response.accessToken)
-        this.cdr.detectChanges()
-        
+      next: (response) => {
+        console.log('1. Login successful', response);
+        this.jwtTokenStorage.saveToken(response.accessToken);
+        this.successMessage = `User login successful for ${response.userName}`;
+        this.errorMessage = '';
+        this.cdr.detectChanges();
+        this.router.navigate(['/dashboard'])
       },
       error: (error) =>{
         console.log('Login Failed')

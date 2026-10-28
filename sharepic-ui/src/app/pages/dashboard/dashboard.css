@@ -1,0 +1,205 @@
+
+/* Main page */
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #f7f7fb;
+  color: #252337;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Top header */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e8e6ef;
+  box-shadow: 0 2px 8px rgba(30, 20, 60, 0.04);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Sharepic branding */
+.brand {
+  font-size: 26px;
+  font-weight: 700;
+  color: #7950d9;
+  letter-spacing: -0.5px;
+}
+
+/* Header buttons */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-actions button {
+  padding: 10px 16px;
+  border: 1px solid #e2deed;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #39334b;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.header-actions button:hover {
+  background-color: #f1edfc;
+}
+
+.header-actions button:active {
+  transform: scale(0.97);
+}
+
+/* Create Post button */
+.header-actions .create-post-btn {
+  background-color: #7950d9;
+  border-color: #7950d9;
+  color: #ffffff;
+}
+
+.header-actions .create-post-btn:hover {
+  background-color: #6740c0;
+}
+
+/* Main feed area */
+.feed-container {
+  width: min(100% - 32px, 760px);
+  margin: 32px auto;
+}
+
+/* Feed heading */
+.feed-container h1 {
+  margin: 0 0 24px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 600px) {
+  .dashboard-header {
+    padding: 14px 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    font-size: 22px;
+  }
+
+  .header-actions {
+    gap: 6px;
+  }
+
+  .header-actions button {
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+
+  .feed-container {
+    margin-top: 24px;
+  }
+}
+
+
+/* Align brand icon and text horizontally */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #7950d9;
+}
+
+/* Style the S icon */
+.brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background-color: #7950d9;
+  color: #ffffff;
+  font-size: 24px;
+}
+
+/* Stack brand name and tagline */
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Reset default paragraph margins */
+.brand-text p {
+  margin: 0;
+}
+
+.brand-text p:first-child {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.brand-text p:last-child {
+  font-size: 13px;
+  font-weight: 400;
+  color: #777184;
+}
+
+.feed-empty {
+  color: #777184;
+  font-size: 15px;
+}
+
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 700px;
+  margin: 24px auto;
+}
+
+.post-card {
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+}
+
+.post-image {
+  display: block;
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  background: #f3f4f6;
+}
+
+.post-content {
+  padding: 16px;
+}
+
+.post-caption {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.post-date {
+  margin: 0;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.feed-empty {
+  margin-top: 32px;
+  text-align: center;
+  color: #6b7280;
+}
