@@ -30,4 +30,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleIllegalUserForPostUpdateException(IllegalUserForPostUpdateException ex){
         return build(HttpStatus.FORBIDDEN,ErrorCode.ILLEGAL_USER_FOR_POST_UPDATE.getErrorCode(), ErrorCode.ILLEGAL_USER_FOR_POST_UPDATE.getMsg());
     }
+    @ExceptionHandler(PostImageFoundNotException.class)
+    public ResponseEntity<ErrorResponse>handlePostImageFoundException(PostImageFoundNotException ex){
+        return build(HttpStatus.NOT_FOUND,ErrorCode.POST_IMAGE_NOT_FOUND.getErrorCode(),ErrorCode.POST_NOT_FOUND.getMsg());
+    }
 }

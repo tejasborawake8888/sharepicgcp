@@ -70,4 +70,5 @@ public class PostService {
     public List<Posts> getAllPosts(){
         return postRepository.findAllByOrderByCreatedAtDesc();
     }
+
 }

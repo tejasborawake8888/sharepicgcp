@@ -1,9 +1,11 @@
 package com.sharepic.post.service;
 
 
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import com.sharepic.post.exception.PostImageFoundNotException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -49,4 +51,26 @@ public class PostImageStorageService {
         }
     }
 
+    public ImageContent downloadPostImage(String imageUrl) {
+        String prefix = "https://storage.googleapis.com/"
+                + bucketName + "/";
+
+        if (imageUrl == null || !imageUrl.startsWith(prefix)) {
+            throw new IllegalArgumentException("Invalid post image URL");
+        }
+
+        String objectName = imageUrl.substring(prefix.length());
+        Blob blob = storage.get(bucketName, objectName);
+
+        if (blob == null) {
+            throw new PostImageFoundNotException("Post image not found");
+        }
+
+        return new ImageContent(
+                blob.getContent(),
+                blob.getContentType()
+        );
+    }
+
+    public record ImageContent(byte[] bytes, String contentType) {}
 }

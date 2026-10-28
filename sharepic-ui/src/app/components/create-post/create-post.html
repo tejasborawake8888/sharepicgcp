@@ -1,0 +1,44 @@
+<div class="create-post-container">
+  <h2>Create a Post</h2>
+
+  <form (ngSubmit)="submitPost()">
+    <label for="caption">Caption</label>
+    <textarea
+      id="caption"
+      name="caption"
+      [(ngModel)]="caption"
+      placeholder="What's on your mind?"
+      maxlength="2000"
+      required
+      rows="4">
+    </textarea>
+
+    <label for="image">Choose an image (optional)</label>
+    <input
+      id="image"
+      type="file"
+      accept="image/*"
+      (change)="onImageSelected($event)"
+    />
+
+    @if (imagePreview) {
+      <div class="image-preview">
+        <img [src]="imagePreview" alt="Selected image preview" />
+      </div>
+    }
+
+    @if (errorMessage) {
+      <p class="error-message">{{ errorMessage }}</p>
+    }
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="submitting">
+        {{ submitting ? 'Posting...' : 'Share Post' }}
+      </button>
+
+      <button type="button" (click)="cancelled.emit()" [disabled]="submitting">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

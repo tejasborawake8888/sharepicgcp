@@ -7,13 +7,23 @@
       </div>
     </div>
     <nav class="header-actions">
-        <button class="create-post-btn">Create Post</button>
+        <button
+            class="create-post-btn"
+            (click)="openCreatePost()">
+            Create Post
+        </button>
         <button class="profile-btn">Profile</button>
         <button class="logout-btn">Logout</button>
     </nav>
 </header>
 
 <main class="feed-container">
+    @if (showCreatePost) {
+        <app-create-post
+            (postCreated)="onPostCreated()"
+            (cancelled)="closeCreatePost()">
+        </app-create-post>
+    }
     <h1>Your Feed</h1>
     @if(loading){
         <p class = "feed-empty">Loading Feed ..........</p>
@@ -23,13 +33,14 @@
     }
     @else{
         <p>posts recevied: {{posts.length}}</p>
-        <section class = "post-list">
+        <section class = "posts-list">
             @for(post of posts; track post.id){
                 <article class="post-card">
                     <img 
                         class = "post-image"
-                        [src]="post.imageUrl"
-                        [alt]="post.caption"
+                        *ngIf="imageUrls[post.id] as imageUrl"
+                        [src]="imageUrl"
+                        [alt]="'Image for post ' + post.id"
                     />
                     <div class="post-content">
                         <p class="post-caption">{{post.caption}}</p>

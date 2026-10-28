@@ -2,6 +2,7 @@ package com.sharepic.post.controller;
 
 import com.sharepic.post.entity.Posts;
 import com.sharepic.post.model.PostRequest;
+import com.sharepic.post.service.PostImageStorageService;
 import com.sharepic.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.Getter;
@@ -23,6 +24,7 @@ import java.util.UUID;
 @Slf4j
 public class PostController {
     private final PostService postService;
+    private final PostImageStorageService postImageStorageService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Posts> createPost(
@@ -63,5 +65,24 @@ public class PostController {
     public ResponseEntity<List<Posts>> getAllPosts(){
         log.info("retrieveing all posts");
         return ResponseEntity.ok().body(postService.getAllPosts());
+    }
+
+    @GetMapping("/{postId}/image")
+    public ResponseEntity<byte[]> getPostImage(
+            @PathVariable UUID postId) {
+
+        Posts post = postService.getPost(postId);
+        if (post.getImageUrl() == null || post.getImageUrl().isBlank()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var image = postImageStorageService.downloadPostImage(post.getImageUrl());
+
+        MediaType mediaType =
+                MediaType.parseMediaType(image.contentType());
+
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .body(image.bytes());
     }
 }
