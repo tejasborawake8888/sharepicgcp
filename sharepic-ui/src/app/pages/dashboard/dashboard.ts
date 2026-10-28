@@ -5,6 +5,8 @@ import { PostResponse } from '../../services/post';
 import { DatePipe,NgIf } from '@angular/common';
 import { PostImageService } from '../../services/post-image';
 import { CreatePost } from '../../components/create-post/create-post';
+import { PostLike } from '../../services/post-like';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -16,11 +18,14 @@ import { CreatePost } from '../../components/create-post/create-post';
 export class Dashboard implements OnInit,OnDestroy{
   constructor(private feed: Feed,
     private cdr:ChangeDetectorRef,
-    private postImage: PostImageService
+    private postImage: PostImageService,
+    private postLike: PostLike
   ){}
   posts: PostResponse[] = []
   loading=true;
   showCreatePost = false;
+  likedPostIds = new Set<string>();
+  likeMessages: { [postId: string]: string } = {};
   imageUrls: { [postId: string]: string } = {};
   feedSubscription?: Subscription
 
@@ -105,5 +110,30 @@ export class Dashboard implements OnInit,OnDestroy{
           this.cdr.detectChanges();
         }
       });
+  }
+  likePost(postId: string): void {
+    if (this.likedPostIds.has(postId)) {
+      return;
+    }
+
+    this.likeMessages[postId] = '';
+
+    this.postLike.likePost(postId).subscribe({
+      next: () => {
+        this.likedPostIds.add(postId);
+        this.cdr.detectChanges();
+      },
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 400) {
+          this.likeMessages[postId] = 'You cannot like your own post.';
+        } else if (err.status === 409) {
+          this.likeMessages[postId] = 'You have already liked this post.';
+        } else {
+          this.likeMessages[postId] = 'Could not like this post. Please try again.';
+        }
+
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

@@ -44,9 +44,24 @@
                     />
                     <div class="post-content">
                         <p class="post-caption">{{post.caption}}</p>
+
                         <p class="post-date">
                             {{post.createdAt | date:'medium'}}
                         </p>
+
+                        <div class="post-actions">
+                            <button
+                                type="button"
+                                class="like-btn"
+                                [disabled]="likedPostIds.has(post.id)"
+                                (click)="likePost(post.id)">
+                                {{ likedPostIds.has(post.id) ? 'Liked ✓' : '♥ Like' }}
+                            </button>
+
+                            @if (likeMessages[post.id]) {
+                                <p class="like-message">{{likeMessages[post.id]}}</p>
+                            }
+                        </div>
                     </div>
                 </article>
             }
